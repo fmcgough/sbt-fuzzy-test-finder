@@ -24,7 +24,7 @@ object FuzzyTest extends AutoPlugin {
         sLog.value.error("This command may only be used in interactive mode")
         state.fail
       } else {
-        val taskResult: Option[(State, Result[Seq[String]])] = Project.runTask(definedTestNames in Test, state)
+        val taskResult: Option[(State, Result[Seq[String]])] = Project.runTask(Test / definedTestNames, state)
 
         taskResult match {
           case None => sys.error("task not defined")
@@ -39,8 +39,9 @@ object FuzzyTest extends AutoPlugin {
               case Success(testName) =>
                 val testTask = s"testOnly $testName"
                 sLog.value.info(s"Running `$testTask`")
-                val historyFile: Option[File] = (historyPath).value
-                historyFile.foreach(f => IO.append(f, testTask))
+                val historyFile: Option[File] = historyPath.value
+                val historyLine = s"${System.currentTimeMillis}:$testTask\n"
+                historyFile.foreach(f => IO.append(f, historyLine))
                 testTask :: newState.copy(history = (Exec(testTask, source = newState.source) :: newState.history))
               case Failure(_) =>
                 sLog.value.error("Test name not found")

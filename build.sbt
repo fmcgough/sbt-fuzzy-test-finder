@@ -1,4 +1,4 @@
-ThisBuild / version := "0.1"
+ThisBuild / version := "0.2-SNAPSHOT"
 ThisBuild / organization := "io.github.fmcgough"
 ThisBuild / description := "Fuzzy finder for running test suites in SBT"
 
@@ -10,5 +10,5 @@ lazy val root = (project in file("."))
     name := "sbt-fuzzy-test-finder",
     publishMavenStyle := false,
     bintrayRepository := "sbt-plugins",
-    bintrayOrganization in bintray := None
+    bintrayOrganization := None
 )
